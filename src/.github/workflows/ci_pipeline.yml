@@ -1,0 +1,42 @@
+name: ML CI Pipeline
+
+# Când să ruleze acest robot?
+on:
+  push:
+    branches: [ "main" ]  # La fiecare push pe main
+  pull_request:
+    branches: [ "main" ]  # La fiecare Pull Request spre main
+
+jobs:
+  test-and-validate:
+    runs-on: ubuntu-latest  # Robotul folosește Linux (Ubuntu)
+
+    steps:
+    # 1. Descarcă codul tău din repository
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    # 2. Instalează Python
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.9"
+
+    # 3. Instalează librăriile (Cache-uite pentru viteză)
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    # 4. Rulează testele
+    - name: Run Tests with Pytest
+      run: |
+        # Adăugăm src în PYTHONPATH ca să găsească modulele
+        export PYTHONPATH=$PYTHONPATH:$(pwd)/src
+        pytest tests/
+
+    # 5. (Opțional) Verifică stilul codului (Linting)
+    - name: Lint with Ruff
+      run: |
+        pip install ruff
+        ruff check src/
