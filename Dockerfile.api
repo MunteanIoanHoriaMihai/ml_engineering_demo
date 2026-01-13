@@ -1,0 +1,26 @@
+# Folosim o versiune stabilă (recomandat 3.11 pentru compatibilitate maximă)
+# Dacă vrei 3.14, asigură-te că există imaginea 'python:3.14-slim' (s-ar putea să fie 'rc')
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Instalăm dependențele
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copiem codul
+# Copiem conținutul folderului src direct în /app/src
+COPY src/ src/
+# Copiem modelele
+COPY models/ models/
+
+# === SCHIMBAREA MAJORĂ ===
+# Setăm PYTHONPATH să includă folderul /app/src
+# Asta face ca Python să găsească direct modulele din src (data_loader, model) fără "src."
+ENV PYTHONPATH=/app/src
+
+EXPOSE 8000
+
+# Rulăm uvicorn indicând fișierul app (fără prefixul src.)
+# Dar trebuie să fim atenți la importurile din app.py
+CMD ["uvicorn", "src.my_app:app", "--host", "0.0.0.0", "--port", "8000"]

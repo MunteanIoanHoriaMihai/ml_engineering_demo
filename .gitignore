@@ -1,0 +1,20 @@
+# Ignoră mediul virtual (redundant dar sănătos)
+venv/
+.venv/
+
+# Ignoră fișierele compilate de Python
+__pycache__/
+*.pyc
+
+# Ignoră cache-ul de teste
+.pytest_cache/
+
+# Ignoră modelele antrenate (sunt mari și binare)
+models/*.joblib
+models/*.pkl
+
+# Ignoră setările VS Code
+.vscode/
+
+# Ignoră fișierele de mediu cu parole
+.env
