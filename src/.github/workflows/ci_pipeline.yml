@@ -3,9 +3,9 @@ name: ML CI Pipeline
 # Când să ruleze acest robot?
 on:
   push:
-    branches: [ "main" ]  # La fiecare push pe main
+    branches: [ "master" ]  # La fiecare push pe main
   pull_request:
-    branches: [ "main" ]  # La fiecare Pull Request spre main
+    branches: [ "master" ]  # La fiecare Pull Request spre main
 
 jobs:
   test-and-validate:
